@@ -1,5 +1,7 @@
 public class insert{
 
+    // O(n^2)
+    // O(n) best case scenario
     public static void main(String[] args) {
         int array[] = {9, 1, 8, 7, 2, 3, 6, 5, 4};
         for(int i : array) {
