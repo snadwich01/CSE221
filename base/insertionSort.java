@@ -2,6 +2,10 @@ public class insert{
 
     // O(n^2)
     // O(n) best case scenario
+    // stable and in place
+    // number of swaps -> 0 -> O(n^2) worst case
+    // suitable for small arrays, not for large ones
+    
     public static void main(String[] args) {
         int array[] = {9, 1, 8, 7, 2, 3, 6, 5, 4};
         for(int i : array) {
