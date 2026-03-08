@@ -29,7 +29,13 @@ class Test{
     while(left <= mid) {
       b[itr[ = a[left];
       ++itr;
-      
+      ++left;
+    }
+
+    while(right <= high) {
+      b[itr] = a[right];
+      ++itr;
+      ++right;
     }
         
     return ansLeft + ansRight + ansCross;
