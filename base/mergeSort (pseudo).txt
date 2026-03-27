@@ -1,3 +1,16 @@
+1. If array size ≤ 1 → already sorted (stop)
+2. Find the middle index
+3. Split array into left and right halves
+4. Recursively call mergeSort on left half
+5. Recursively call mergeSort on right half
+6. Now both halves are individually sorted
+7. Compare elements from left and right
+8. Pick the smaller one and add to result array
+9. Repeat until all elements are merged
+10. Final merged array is fully sorted
+
+
+pseudocode:
 function mergeSort(array):
     n = length(array)
     if n <= 1:
