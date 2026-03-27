@@ -1,0 +1,52 @@
+function mergeSort(array):
+    n = length(array)
+    if n <= 1:
+        return  // Base case: already sorted
+
+    middle = n / 2
+    leftArray = new array of size middle
+    rightArray = new array of size n - middle
+
+    // Split array into left and right
+    for i from 0 to n-1:
+        if i < middle:
+            leftArray[i] = array[i]
+        else:
+            rightArray[i - middle] = array[i]
+
+    // Recursively sort the halves
+    mergeSort(leftArray)
+    mergeSort(rightArray)
+
+    // Merge the sorted halves back into the original array
+    merge(leftArray, rightArray, array)
+
+
+function merge(leftArray, rightArray, array):
+    leftSize = length(leftArray)
+    rightSize = length(rightArray)
+    i = 0       // index for merged array
+    l = 0       // index for leftArray
+    r = 0       // index for rightArray
+
+    // Merge until one side is exhausted
+    while l < leftSize AND r < rightSize:
+        if leftArray[l] < rightArray[r]:
+            array[i] = leftArray[l]
+            l = l + 1
+        else:
+            array[i] = rightArray[r]
+            r = r + 1
+        i = i + 1
+
+    // Copy any remaining elements from leftArray
+    while l < leftSize:
+        array[i] = leftArray[l]
+        l = l + 1
+        i = i + 1
+
+    // Copy any remaining elements from rightArray
+    while r < rightSize:
+        array[i] = rightArray[r]
+        r = r + 1
+        i = i + 1
