@@ -1,0 +1,15 @@
+QUICKSORT(A, l, r) ▷ A[0 : n]
+if l <r
+    then pivot ← PARTITION(A, l, r)
+        QUICKSORT(A, 1, pivot - 1)
+        QUICKSORT(A, pivot + 1, r)
+
+PARTITION (A, p, q) ▷ A[p: q]
+x ← A[p]    ▷ pivot = A[p]
+i ← p
+for j ← p + 1 to q
+    do if A[j] <= x
+        then i ← i + 1
+            exchange A[i] <-> A[j]
+exchange A[p] <-> A[i]
+return i
