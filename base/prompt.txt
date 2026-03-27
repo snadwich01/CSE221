@@ -1,0 +1,1 @@
+can you briefly go over the mergesort steps whats happennig in under 10 short lines, the lines should be cheatsheet style short
