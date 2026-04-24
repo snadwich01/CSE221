@@ -1,53 +1,85 @@
-//for java
-//ArrayDequeue
+import java.io.*;
+import java.util.*;
 
-from sys import stdin, stdout
-from collections import deque
+public class connect {
+    public static void main(String[] args) throws IOException {
+        BufferedReader data = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
 
-lines = (line for line in stdin.readlines())
+        int t = Integer.parseInt(data.readLine().trim());
 
-t = int(next(lines))
+        for (int test = 0; test < t; test++) {
+            StringTokenizer st = new StringTokenizer(data.readLine());
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
 
-tokens = (token for token in stdin.read().strip().split())
+            int[] head = new int[n + 1];
+            int[] nxt = new int[m + 1];
+            int[] to = new int[m + 1];
+            Arrays.fill(head, 0);
+            int edgeCount = 0;
 
-def next_int() -> int:
-    return int(next(tokens))
+            for (int i = 0; i < m; i++) {
+                st = new StringTokenizer(data.readLine());
+                int a = Integer.parseInt(st.nextToken());
+                int b = Integer.parseInt(st.nextToken());
 
-t = next_int
+                edgeCount++;
+                to[edgeCount] = b;
+                nxt[edgeCount] = head[a];
+                head[a] = edgeCount;
+            }
 
-for cs in range (t):
-    n = next_int()
-    m = next_int()
+            int[] result = solve(n, head, nxt, to);
 
-    graph = [[] for _ in range(n+1)]
+            if (result == null) {
+                out.println(-1);
+            } else {
+                for (int i = 0; i < result.length; i++) {
+                    if (i > 0) out.print(' ');
+                    out.print(result[i]);
+                }
+                out.println();
+            }
+        }
 
-    for i in range(m):
-        a = next_int()
-        b = next_int()
-        graph[a].append(b)
+        out.flush();
+        out.close();
+    }
 
-    ordering = solve(n,m,graph)
+    static int[] solve(int n, int[] head, int[] nxt, int[] to) {
+        int[] prereqsLeft = new int[n + 1];
 
-    if len(ordering) < n:
-        stdout.write(".1\n")
-    else:
-        stdout.write(" ".join(map(str,orderingh)) + "\n")
+        for (int u = 1; u <= n; u++) {
+            for (int e = head[u]; e != 0; e = nxt[e]) {
+                prereqsLeft[to[e]]++;
+            }
+        }
 
-def solve(n,m,graph):
-    ordering = []
-    prereqsleft = [0 for _ in range(n+1)]
-    for u in range(1,n+1):
-        for v in graph[u]:
-            prereqsleft[v] +=1
-    q = deque([u for u in range(1,n+1) if prereqsleft[u] ==0])
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        for (int u = 1; u <= n; u++) {
+            if (prereqsLeft[u] == 0) {
+                q.addLast(u);
+            }
+        }
 
-    while not q:
-        u = q.popleft()
-        ordering.append(u)
+        int[] ordering = new int[n];
+        int pos = 0;
 
-        for v in graph[u]:
-            prereqsleft[v] -= 1
-            if prereqsleft[v]== 0:
-                q.append(v)
+        while (!q.isEmpty()) {
+            int u = q.pollFirst();
+            ordering[pos] = u;
+            pos++;
+            for (int e = head[u]; e != 0; e = nxt[e]) {
+                int v = to[e];
+                prereqsLeft[v]--;
+                if (prereqsLeft[v] == 0) {
+                    q.addLast(v);
+                }
+            }
+        }
 
-    return ordering
+        if (pos < n) return null;
+        return ordering;
+    }
+}
