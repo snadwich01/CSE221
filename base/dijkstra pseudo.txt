@@ -1,0 +1,32 @@
+Dijkstra(G, s):
+
+    PQ = [], parent = [], visited = [], d = []
+
+    for each v in V[G]:
+        d[v] = ∞
+        parent[v] = null
+
+    d[s] = 0, visited[s] = 1
+
+    PQ = [(d[s], s)]
+
+    while PQ is not empty:
+
+        cd, u = heapq.heappop(PQ)
+
+        if visited[u] == 2:
+            continue
+
+        visited[u] = 2
+
+        for each vertex v ∈ Adj[u]:
+
+            if visited[v] != 2 and d[v] > d[u] + w(u, v):
+
+                d[v] = d[u] + w(u, v)
+
+                heapq.heappush(PQ, (d[v], v))
+
+                visited[v] = 1
+
+                parent[v] = u
