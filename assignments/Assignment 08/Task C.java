@@ -22,13 +22,10 @@ public class mst2 {
         if (a != b) {
             if (rank[a] > rank[b]) {
                 parent[b] = a;
-
             } else if (rank[a] < rank[b]) {
                 parent[a] = b;
-
             } else {
                 parent[b] = a; rank[a]++;
-
             }
         }
     }
@@ -64,13 +61,22 @@ public class mst2 {
 
         boolean[] picked = new boolean[m];
         long mstCost = 0;
+        int edgeCount = 0;
         for (int i = 0; i < m; i++) {
             int idx = order[i];
             if (find(eu[idx]) != find(ev[idx])) {
                 union(eu[idx], ev[idx]);
                 picked[idx] = true;
                 mstCost += ew[idx];
+                edgeCount++;
             }
+        }
+
+        if (edgeCount < n - 1) {
+            out.println(-1);
+            out.flush();
+            data.close();
+            return;
         }
 
         int[] deg = new int[n + 1];
@@ -99,7 +105,7 @@ public class mst2 {
         }
 
         int[] queue = new int[n + 1];
-        int[] parent = new int[n + 1];
+        int[] prev = new int[n + 1];
         int[] from = new int[n + 1];
 
         long best = Long.MAX_VALUE;
@@ -109,18 +115,18 @@ public class mst2 {
 
             int src = eu[i], dst = ev[i], w = ew[i];
 
-            Arrays.fill(parent, -1);
+            Arrays.fill(prev, -1);
             Arrays.fill(from, 0);
             int head = 0, tail = 0;
-            parent[src] = src;
+            prev[src] = src;
             queue[tail++] = src;
 
             while (head < tail) {
                 int curr = queue[head++];
                 for (int j = 0; j < deg[curr]; j++) {
                     int nb = adj[curr][j];
-                    if (parent[nb] == -1) {
-                        parent[nb]  = curr;
+                    if (prev[nb] == -1) {
+                        prev[nb] = curr;
                         from[nb] = weight[curr][j];
                         queue[tail++] = nb;
                     }
@@ -131,7 +137,7 @@ public class mst2 {
             int cur = dst;
             while (cur != src) {
                 if (from[cur] > maxEdge) maxEdge = from[cur];
-                cur = parent[cur];
+                cur = prev[cur];
             }
 
             long candidate = mstCost - maxEdge + w;
