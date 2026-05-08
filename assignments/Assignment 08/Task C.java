@@ -60,14 +60,14 @@ public class mst2 {
         }
 
         boolean[] picked = new boolean[m];
-        long mstCost = 0;
+        long cost = 0;
         int edgeCount = 0;
         for (int i = 0; i < m; i++) {
-            int idx = order[i];
-            if (find(eu[idx]) != find(ev[idx])) {
-                union(eu[idx], ev[idx]);
-                picked[idx] = true;
-                mstCost += ew[idx];
+            int pos = order[i];
+            if (find(eu[pos]) != find(ev[pos])) {
+                union(eu[pos], ev[pos]);
+                picked[pos] = true;
+                cost += ew[pos];
                 edgeCount++;
             }
         }
@@ -117,6 +117,7 @@ public class mst2 {
 
             Arrays.fill(prev, -1);
             Arrays.fill(from, 0);
+            
             int head = 0, tail = 0;
             prev[src] = src;
             queue[tail++] = src;
@@ -133,16 +134,14 @@ public class mst2 {
                 }
             }
 
-            int maxEdge = 0;
+            // try removing every edge on the path, not just the maximum
             int cur = dst;
             while (cur != src) {
-                if (from[cur] > maxEdge) maxEdge = from[cur];
+                long candidate = cost - from[cur] + w;
+                if (candidate > cost && candidate < best) {
+                    best = candidate;
+                }
                 cur = prev[cur];
-            }
-
-            long candidate = mstCost - maxEdge + w;
-            if (candidate > mstCost && candidate < best) {
-                best = candidate;
             }
         }
 
